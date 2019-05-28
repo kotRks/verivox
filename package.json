@@ -1,0 +1,8 @@
+{
+  "name": "verivox",
+  "version": 1,
+  "dependencies": {},
+  "devDependencies": {
+    "cypress": "^3.3.1"
+  }
+}
