@@ -5,14 +5,13 @@ export default class FilterPage{
         this.ActionSelector = '.mps-tab-list';
         this.DslSelector = 'DSL';
         this.CalculatorSelector = '#mps-tab-box-5';
-        this.PageFormSelector = '.page-default-signup';
-        this.VorwahlSelector = 'Ihre Vorwahl';
+        this.VorwalhSelector = '[class="float-label-input"]';
         this.FindButton = '[type="submit"]';
-        this.ProgressPopupSelector = 'telco-splash';
-        this.ListSelector = '[ng-controller="productController"]';
-        this.TariffInfoButtonSelector = '[class="responsive-label-txt resultlist-cta"]';
+        this.ListSelector = '[class="product-list"]'
+        this.ListElementSelector = '[class="products-table-full-width result-table"]';
         this.NextTariffSelector = '[class="pagination-area"]';
         this.NextTariffButtonSelector = '[ng-click="getAndDisplayNextPage()"]';
+        this.TariffInfoButtonSelector = '[class="responsive-label-txt resultlist-cta"]';
     }
 
     openPage(path = '/'){
@@ -25,58 +24,69 @@ export default class FilterPage{
           .click({force: true});
     }
 
-    selectDSL(){
+    TypeToDSl(value){
+        cy.log('second - ', value);
+        cy.get(this.CalculatorSelector).find(this.VorwalhSelector).type(value);
+    }
+
+    selectDSL(value){
         this.clickOnElement(this.ActionSelector, this.DslSelector);
-        cy.waitUntilVisible(cy.get(this.CalculatorSelector));
     }
 
     typeToCalculator(value){
-        cy.get(this.CalculatorSelector)
-          .within((form) => {
-              cy.get(this.PageFormSelector)
-                .contain(this.VorwahlSelector)
-                .type(value, {force: true})
-          })
+        cy.log('first - ', value );
+        this.TypeToDSl(value);
     }
 
     startSearch(){
-        cy.get(this.FindButton)
-          .click({forve: true});
+        cy.get(this.CalculatorSelector).find(this.FindButton).click({force: true});
+    }
+
+    makePause(pause){
+//        cy.get(this.ProgressPopupSelector).waitUntilNotExist();
+//        cy.get(this.ProgressPopupSelector).waitUntilVisible();
+        cy.wait(pause);
     }
 
     validateList(){
-        cy.waitUntilExist(this.ProgressPopupSelector);
-        cy.get(this.ListSelector).should( ($list) => {
-            expect($list.length()).to.be.at.least(5)
-        })
+        this.makePause(10000);
+        cy.get(this.ListSelector)
+          .find(this.ListElementSelector)
+          .its('length')
+          .should('be.gte', 5)
     }
 
     validateFirstTarif(){
-        let tariff = new TariffPage();
-        cy.waitUntilExist(this.ProgressPopupSelector);
+        this.makePause(10000);
         cy.get(this.ListSelector)
+          .find(this.ListElementSelector)
           .first()
-          .then( ($element) => {
+          .within( ($element) => {
               cy.get(this.TariffInfoButtonSelector)
                 .click({force : true})
           });
+        let tariff = new TariffPage();
         tariff.validateElementsIsPresent();
     }
 
     validateTariffCounter(count){
-        cy.waitUntilExist(this.ProgressPopupSelector);
-        cy.get(this.ListSelector).should( ($list) => {
-            expect($list).to.have.length(count);
-        });
+        this.makePause(10000);
+        cy.get(this.ListSelector)
+          .find(this.ListElementSelector)
+          .should('have.length', count + 1);
+
         cy.get(this.NextTariffSelector)
           .should('exist');
         cy.get(this.NextTariffButtonSelector)
           .should('exist');
         cy.get(this.NextTariffButtonSelector)
           .click({force: true});
-        cy.get(this.ListSelector).should( ($list) => {
-            expect($list).to.have.length(count*2);
-        })
+
+        cy.wait(2000);
+
+        cy.get(this.ListSelector)
+          .find(this.ListElementSelector)
+          .should('have.length', count * 2 + 1);
     }
 
 

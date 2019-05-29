@@ -24,7 +24,7 @@ describe('Test cases', function() {
         page.selectDSL();
         page.typeToCalculator('030');
         page.startSearch();
-        page.validateTariffCounter(40);
+        page.validateTariffCounter(20);
     })
 
 });

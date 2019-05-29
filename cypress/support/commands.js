@@ -9,10 +9,18 @@
 // ***********************************************
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-Cypress.Commands.add('waitUntilVisible', {prevSubject: 'element'},subject => {
-    cy.wrap(subject).should('be.visible');
-});
+Cypress.Commands.add(
+    'waitUntilVisible',
+    {
+        prevSubject: 'element',
+    },
+    subject => cy.wrap(subject).should('not.visible'),
+);
 
-Cypress.Commands.add('waitUntilExist', {prevSubject: 'element'},subject => {
-    cy.wrap(subject).should('not.exist');
-});
+Cypress.Commands.add(
+    'waitUntilNotExist',
+    {
+        prevSubject: 'element',
+    },
+    subject => cy.wrap(subject).should('not.exist'),
+);

@@ -1,9 +1,9 @@
 export default class TariffInfo{
     constructor(){
         this.TariifAmount = '[class="price"]';
-        this.FirstInfoButton = '[description="firstAvailabilityCheckButton"]';
-        this.SecondInfoButton = '[description="secondAvailabilityCheckButton"]';
-        this.TariffName = 'class="group-header"';
+        this.FirstInfoButton = '[data-description="firstAvailabilityCheckButton"]';
+        this.SecondInfoButton = '[data-description="secondAvailabilityCheckButton"]';
+        this.TariffName = '.tariff-details > .group-header';
         this.SecondAmount = '[class="average-price"]';
     }
 
