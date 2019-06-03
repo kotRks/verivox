@@ -42,14 +42,14 @@ export default class FilterPage{
         cy.get(this.CalculatorSelector).find(this.FindButton).click({force: true});
     }
 
-    makePause(pause){
-//        cy.get(this.ProgressPopupSelector).waitUntilNotExist();
-//        cy.get(this.ProgressPopupSelector).waitUntilVisible();
-        cy.wait(pause);
-    }
-
     validateList(){
-        this.makePause(10000);
+        cy.server()
+        cy.route({
+            method: 'POST',
+            url: '/applications/broadband/service/hook/offers/broadband/prefix/030/',
+            delay: 20000
+        }).as('AddResult');
+
         cy.get(this.ListSelector)
           .find(this.ListElementSelector)
           .its('length')
@@ -57,7 +57,14 @@ export default class FilterPage{
     }
 
     validateFirstTarif(){
-        this.makePause(10000);
+        cy.server()
+        cy.route({
+            method: 'POST',
+            url: '/applications/broadband/service/hook/offers/broadband/prefix/030/',
+            delay: 20000
+        }).as('AddResult');
+
+        cy.get('@AddResult');
         cy.get(this.ListSelector)
           .find(this.ListElementSelector)
           .first()
@@ -70,7 +77,14 @@ export default class FilterPage{
     }
 
     validateTariffCounter(count){
-        this.makePause(10000);
+        cy.server()
+        cy.route({
+            method: 'POST',
+            url: '/applications/broadband/service/hook/offers/broadband/prefix/030/',
+            delay: 20000
+        }).as('AddResult');
+
+        cy.get('@AddResult');
         cy.get(this.ListSelector)
           .find(this.ListElementSelector)
           .should('have.length', count + 1);
@@ -82,8 +96,8 @@ export default class FilterPage{
         cy.get(this.NextTariffButtonSelector)
           .click({force: true});
 
-        cy.wait(2000);
 
+        cy.get('@AddResult');
         cy.get(this.ListSelector)
           .find(this.ListElementSelector)
           .should('have.length', count * 2 + 1);
