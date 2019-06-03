@@ -1,8 +1,22 @@
 {
   "name": "verivox",
-  "version": 1,
-  "dependencies": {},
-  "devDependencies": {
+  "version": "1.0.0",
+  "description": "verivox Cypress UI tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kotRks/verivox.git"
+  },
+  "author": "Kostiantyn Riabko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kotRks/verivox/issues"
+  },
+  "homepage": "https://github.com/kotRks/verivox#readme",
+  "dependencies": {
     "cypress": "^3.3.1"
   }
 }
