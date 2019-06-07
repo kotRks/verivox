@@ -8,7 +8,9 @@ export default class TariffInfo{
     }
 
     elementOnPage(elementSelector){
-        cy.get(elementSelector).should('exist').and('be.visible')
+        cy.get(elementSelector)
+          .should('exist')
+          .and('be.visible')
     }
 
     validateElementsIsPresent(){

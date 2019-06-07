@@ -1,5 +1,8 @@
-import FilterPage from '../pages/FilterPage.js'
-const page = new FilterPage();
+import StartPage from '../pages/StartPage.js'
+import SearchResultPage from '../pages/SearchResultPage.js'
+
+const page = new StartPage();
+const searchPage =  new SearchResultPage();
 
 describe('Test cases', function() {
     beforeEach(() => {
@@ -10,21 +13,20 @@ describe('Test cases', function() {
         page.selectDSL();
         page.typeToCalculator('030');
         page.startSearch();
-        page.validateList();
+        searchPage.validateList();
     });
 
     it('Scenario 2: Result List - verify Offer detail page', function() {
         page.selectDSL();
         page.typeToCalculator('030');
         page.startSearch();
-        page.validateFirstTarif();
+        searchPage.validateFirstTarif();
     });
 
     it('Scenario 3: Lazy loading/pagination for loading the Result List', function() {
         page.selectDSL();
         page.typeToCalculator('030');
         page.startSearch();
-        page.validateTariffCounter(20);
+        searchPage.validateTariffCounter(20);
     })
-
 });
