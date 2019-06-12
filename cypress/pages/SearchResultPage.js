@@ -7,6 +7,8 @@ export default class SearcResultPage {
         this.NextTariffSelector = '[class="pagination-area"]';
         this.NextTariffButtonSelector = '[ng-click="getAndDisplayNextPage()"]';
         this.TariffInfoButtonSelector = '[class="responsive-label-txt resultlist-cta"]';
+        this.VisiblePopupSelector = '[class="telco-splash"]'
+        this.NotVisiblePopupSelector = '[class="telco-splash no-show"]'
     }
 
     vaitForView(){
@@ -20,8 +22,35 @@ export default class SearcResultPage {
         cy.get('@AddResult');
     }
 
-    validateList(){
+    getBlock(blockSelector) {
+        return cy.get(blockSelector);
+    }
+
+    waitForShowPopup() {
+        this.getBlock(this.VisiblePopupSelector).should('exist');
+    }
+
+    waitForHidePopup() {
+        this.getBlock(this.NotVisiblePopupSelector).should('exist');
+    }
+
+    getNewItems(){
+        cy.get(this.NextTariffButtonSelector)
+          .click({force: true});
         this.vaitForView();
+    }
+
+    validateListCount(itemsonPage, counter){
+        cy.get(this.ListSelector)
+          .find(this.ListElementSelector)
+          .its('length')
+          .should('be.gte', (counter - 1) * itemsonPage)
+          .and('be.lte', counter * itemsonPage + 1)
+    }
+
+    validateList(){
+        this.waitForShowPopup();
+        this.waitForHidePopup();
 
         cy.get(this.ListSelector)
           .find(this.ListElementSelector)
@@ -30,7 +59,8 @@ export default class SearcResultPage {
     }
 
     validateFirstTarif(){
-        this.vaitForView();
+        this.waitForShowPopup();
+        this.waitForHidePopup();
 
         cy.get(this.ListSelector)
           .find(this.ListElementSelector)
@@ -44,7 +74,8 @@ export default class SearcResultPage {
     }
 
     validateTariffCounter(count){
-        this.vaitForView();
+        this.waitForShowPopup();
+        this.waitForHidePopup();
 
         cy.get(this.ListSelector)
           .find(this.ListElementSelector)
@@ -54,13 +85,8 @@ export default class SearcResultPage {
           .should('exist');
         cy.get(this.NextTariffButtonSelector)
           .should('exist');
-        cy.get(this.NextTariffButtonSelector)
-          .click({force: true});
 
-        this.vaitForView();
-
-        cy.get(this.ListSelector)
-          .find(this.ListElementSelector)
-          .should('have.length', count * 2 + 1);
+        this.getNewItems()
+        this.validateListCount(count,1);
     }
 }
