@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/kotRks/verivox#readme",
   "dependencies": {
-    "cypress": "^3.3.1"
+    "cypress": "^12.7.0"
   }
 }
